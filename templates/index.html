@@ -88,7 +88,11 @@
 <body>
 
     <h1>Sneakerness Bálint Stocklist</h1>
-   <img src="{{ url_for('qr_stocklist') }}" alt="QR Code">
+    <div style="grid-column: 1 / -1; text-align:center; margin-bottom:20px;">
+        <h3>STOCKLIST QR FOR YOUR FRIENDS</h3>
+        <img src="{{ url_for('qr_stocklist') }}" alt="QR Code">
+    </div>
+
 
     <!-- FILTER -->
     <div style="width: 100%; text-align: center; margin-bottom: 20px;">
