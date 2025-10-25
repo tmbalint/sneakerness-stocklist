@@ -110,6 +110,21 @@
         </select>
     </div>
 
+    <div style="width: 100%; text-align: center; margin-bottom: 20px;">
+        <label>Filter by Brand:</label><br>
+        <input type="checkbox" id="Nike" value="Nike" onchange="filterShoes()"> Nike
+        <input type="checkbox" id="Balenciaga" value="Balenciaga" onchange="filterShoes()"> Balenciaga
+        <input type="checkbox" id="Off-White" value="Off-White" onchange="filterShoes()"> Off-White
+        <input type="checkbox" id="Dior" value="Dior" onchange="filterShoes()"> Dior
+        <input type="checkbox" id="Jordan 1" value="Jordan 1" onchange="filterShoes()"> Jordan 1
+        <input type="checkbox" id="Jordan 4" value="Jordan 4" onchange="filterShoes()"> Jordan 4
+        <input type="checkbox" id="Travis Scott" value="Travis Scott" onchange="filterShoes()"> Travis Scott
+        <input type="checkbox" id="New Balance" value="New Balance" onchange="filterShoes()"> New Balance
+        <input type="checkbox" id="The North Face" value="The North Face" onchange="filterShoes()"> The North Face
+        <input type="checkbox" id="VLONE" value="VLONE" onchange="filterShoes()"> VLONE
+        <input type="checkbox" id="Yeezy" value="Yeezy" onchange="filterShoes()"> Yeezy
+    </div>
+
     <!-- SHOE LIST -->
     {% for shoe in shoes %}
         <div class="shoe">
@@ -139,6 +154,31 @@
             });
         }
     </script>
+    <script>
+    function filterShoes() {
+        const size = document.getElementById('sizeFilter').value;
+    
+    // Collect checked brands
+        const brandCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+        let selectedBrands = [];
+        brandCheckboxes.forEach(cb => {
+            if(cb.checked) selectedBrands.push(cb.value);
+        });
 
+        const shoes = document.querySelectorAll('.shoe');
+        shoes.forEach(s => {
+            const sSize = s.querySelector('.size').innerText;
+            const sName = s.querySelector('h3').innerText;
+
+        // Size filter
+            let sizeMatch = (size === '' || sSize.includes(size));
+
+        // Brand filter: show if any selected brand is in the shoe name
+            let brandMatch = (selectedBrands.length === 0 || selectedBrands.some(b => sName.includes(b)));
+
+            s.style.display = (sizeMatch && brandMatch) ? 'block' : 'none';
+        });
+    }
+    </script>
 </body>
 </html>
