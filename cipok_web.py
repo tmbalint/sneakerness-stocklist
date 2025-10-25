@@ -32,24 +32,25 @@ shoes = [
 def index():
     return render_template("index.html", shoes=shoes)
 
-# QR code for the stocklist
-@app.route("/qr")
 def qr_stocklist():
-    try:
-        # URL for your live stocklist
-        url = "https://sneakerness-stocklist-1.onrender.com/"
+    url = "https://sneakerness-stocklist-1.onrender.com/"  # live stocklist URL
+    
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_H,
+        box_size=10,
+        border=4
+    )
+    qr.add_data(url)
+    qr.make(fit=True)
 
-        # Generate QR code
-        img = qrcode.make(url)
+    img = qr.make_image(fill_color="black", back_color="white")
 
-        # Save to in-memory file
-        buf = BytesIO()
-        img.save(buf, format="PNG")
-        buf.seek(0)
+    buf = BytesIO()
+    img.save(buf, format="PNG")
+    buf.seek(0)
 
-        return send_file(buf, mimetype='image/png')
-    except Exception as e:
-        return f"Error generating QR code: {e}", 500
+    return send_file(buf, mimetype='image/png')
 
 if __name__ == "__main__":
     app.run(debug=True)
