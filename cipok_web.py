@@ -35,7 +35,7 @@ def index():
 # QR code for the stocklist
 @app.route("/qr")
 def qr_stocklist():
-    url = "http://127.0.0.1:5000/"  # replace with your public domain when deployed
+    url = "https://sneakerness-stocklist.onrender.com/"  # replace with your public domain when deployed
     img = qrcode.make(url)
     buf = BytesIO()
     img.save(buf)
