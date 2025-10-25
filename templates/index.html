@@ -38,7 +38,7 @@
 
         .shoe img {
             width: 100%;
-            height: auto; /* keep full image visible */
+            height: auto; 
             object-fit: contain;
             border-radius: 8px;
             margin-bottom: 10px;
@@ -66,16 +66,16 @@
         }
 
         .shoe .img-container {
-        height: 200px; /* same for all cards */
-        display: flex;
-        justify-content: center;
-        align-items: center;
+            height: 200px; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .shoe .img-container img {
-        max-height: 100%;
-        max-width: 100%;
-        object-fit: contain; /* ensures full image visible */
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain; 
         }
 
         /* Filter styling */
@@ -88,16 +88,16 @@
 <body>
 
     <h1>Sneakerness Bálint Stocklist</h1>
+
     <div style="grid-column: 1 / -1; text-align:center; margin-bottom:20px;">
         <h3>STOCKLIST QR FOR YOUR FRIENDS</h3>
         <img src="{{ url_for('qr_stocklist') }}" alt="QR Code">
     </div>
 
-
-    <!-- FILTER -->
+    <!-- FILTERS -->
     <div style="width: 100%; text-align: center; margin-bottom: 20px;">
         <label for="sizeFilter">Filter by size:</label>
-        <select id="sizeFilter" onchange="filterSize()">
+        <select id="sizeFilter" onchange="filterShoes()">
             <option value="">All</option>
             <option value="EU41">EU41</option>
             <option value="EU42">EU42</option>
@@ -144,21 +144,12 @@
         </div>
     {% endfor %}
 
-    <script>
-        function filterSize() {
-            const size = document.getElementById('sizeFilter').value;
-            const shoes = document.querySelectorAll('.shoe');
-            shoes.forEach(s => {
-                const sSize = s.querySelector('.size').innerText;
-                s.style.display = (size === '' || sSize.includes(size)) ? 'block' : 'none';
-            });
-        }
-    </script>
+    <!-- COMBINED FILTER SCRIPT -->
     <script>
     function filterShoes() {
         const size = document.getElementById('sizeFilter').value;
-    
-    // Collect checked brands
+
+        // Collect checked brands
         const brandCheckboxes = document.querySelectorAll('input[type="checkbox"]');
         let selectedBrands = [];
         brandCheckboxes.forEach(cb => {
@@ -170,10 +161,10 @@
             const sSize = s.querySelector('.size').innerText;
             const sName = s.querySelector('h3').innerText;
 
-        // Size filter
+            // Size filter
             let sizeMatch = (size === '' || sSize.includes(size));
 
-        // Brand filter: show if any selected brand is in the shoe name
+            // Brand filter: show if any selected brand is in the shoe name
             let brandMatch = (selectedBrands.length === 0 || selectedBrands.some(b => sName.includes(b)));
 
             s.style.display = (sizeMatch && brandMatch) ? 'block' : 'none';
