@@ -35,12 +35,21 @@ def index():
 # QR code for the stocklist
 @app.route("/qr")
 def qr_stocklist():
-    url = "https://sneakerness-stocklist-1.onrender.com"  # replace with your public domain when deployed
-    img = qrcode.make(url)
-    buf = BytesIO()
-    img.save(buf)
-    buf.seek(0)
-    return send_file(buf, mimetype='image/png')
+    try:
+        # URL for your live stocklist
+        url = "https://sneakerness-stocklist-1.onrender.com/"
+
+        # Generate QR code
+        img = qrcode.make(url)
+
+        # Save to in-memory file
+        buf = BytesIO()
+        img.save(buf, format="PNG")
+        buf.seek(0)
+
+        return send_file(buf, mimetype='image/png')
+    except Exception as e:
+        return f"Error generating QR code: {e}", 500
 
 if __name__ == "__main__":
     app.run(debug=True)
