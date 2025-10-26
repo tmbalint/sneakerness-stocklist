@@ -14,7 +14,9 @@ shoes = [
     {"name": "Jordan 1 High Stage Haze ", "image": "air-jordan-1-retro-high-og-stage-haze-1-1000.webp", "size": "EU42", "condition": "Használt - Used", "price": " "},
     {"name": "Jordan 1 Low Travis Scott Canary", "image": "travis-canary.webp", "size": "EU42", "condition": "Új hibával - DS w flaw", "price": " "},
     {"name": "Jordan 1 Low Travis Scott Medium Olive", "image": "medium-olive.webp", "size": "EU41, EU42, EU42.5 x2, EU43", "condition": "DS, 42.5 Használt és Új is - Used and DS too", "price": " "},
-    {"name": "Jordan 4 AMM While You We're Sleeping", "image": "j4-a-ma-maniere.webp", "size": "EU42", "condition": "DS", "price": " "},
+    {"name": "Nike Air Force 1 Travis Scott Sail", "image": "travisaf.jpg", "size": "EU41", "condition": "Használt - Used", "price": " "},
+    {"name": "Jordan 4 SB Navy Blue", "image": "j4navy.webp", "size": "EU46 x2, EU43", "condition": "Új - DS", "price": " "},
+    {"name": "Jordan 4 AMM While You We're Sleeping", "image": "j4-a-ma-maniere.webp", "size": "EU42", "condition": "Új - DS", "price": " "},
     {"name": "Jordan 4 Fire Red", "image": "j4-fire-red.webp", "size": "EU42", "condition": "Használt - Used", "price": " "},
     {"name": "Jordan 4 Oreo", "image": "air-jordan-4-retro-white-oreo-2021-1-1000.webp", "size": "EU44, EU45", "condition": "Használt - Used", "price": " "},
     {"name": "Jordan 4 SB Pine Green", "image": "j4-sb-pine-green.webp", "size": "EU42", "condition": "Használt - Used", "price": " "},
@@ -25,6 +27,8 @@ shoes = [
     {"name": "Nike SB Dunk Low Orange Lobster", "image": "concepts-x-nike-dunk-sb-low-orange-lobster-1-1000.webp", "size": "EU44", "condition": "Használt - Used", "price": " "},
     {"name": "The North Face 1996 Retro Nuptse 700", "image": "1TheNorthFace1996RetroNuptse700.webp", "size": "L", "condition": "Használt - Used", "price": " "},
     {"name": "Yeezy Foam RNNR MX Cinder", "image": "foam-cinder.webp", "size": "EU43", "condition": "Használt - Used", "price": " "},
+    {"name": "Yeezy Boost 350 Static", "image": "yeezystatic.webp", "size": "EU43 1/3", "condition": "Használt - Used", "price": " "},
+    {"name": "Yeezy Boost 350 Tail Light", "image": "yeezytaillight.jpeg", "size": "EU44", "condition": "Használt - Used", "price": " "},
     {"name": "VLONE x 999 Juice WRLD Butterfly tee", "image": "vlone.webp", "size": "XL", "condition": "Új - DS", "price": " "},
 ]
 
