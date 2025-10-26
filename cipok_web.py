@@ -32,6 +32,7 @@ shoes = [
 def index():
     return render_template("index.html", shoes=shoes)
 
+@app.route("/qr")
 def qr_stocklist():
     url = "https://sneakerness-stocklist-1.onrender.com/"  # live stocklist URL
     

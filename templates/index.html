@@ -1,175 +1,423 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sneakerness Bálint Stocklist</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            padding: 20px;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sneakerness Bálint Stocklist</title>
 
-        h1 {
-            grid-column: 1/-1; /* span full width */
-            text-align: center;
-            margin-bottom: 20px;
-        }
+  <!-- Choices.js for modern multi-select -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
-        .shoe {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            text-align: center;
-            border: 1px solid #ccc;
-            padding: 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s;
-            min-height: 400px; /* consistent card height */
-        }
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        .shoe:hover {
-            transform: scale(1.05);
-        }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica', Arial, sans-serif;
+      background: #fafafa;
+      min-height: 100vh;
+      padding: 15px;
+      color: #1a1a1a;
+    }
 
-        .shoe img {
-            width: 100%;
-            height: auto; 
-            object-fit: contain;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
 
-        .shoe h3 {
-            font-size: 18px;
-            margin: 5px 0;
-        }
+    h1 {
+      text-align: center;
+      color: #1a1a1a;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      letter-spacing: -0.5px;
+    }
 
-        .shoe p {
-            font-size: 14px;
-            color: #555;
-            margin: 2px 0;
-        }
+    /* QR section */
+    .qr-section {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      border: 1px solid #e5e5e5;
+    }
 
-        .shoe .price {
-            font-size: 16px;
-            font-weight: bold;
-            margin-top: 5px;
-        }
+    .qr-section img {
+      width: 80px;
+      height: 80px;
+      margin-right: 15px;
+      border-radius: 8px;
+      border: 1px solid #e5e5e5;
+    }
 
-        .size {
-            font-weight: bold;
-        }
+    .qr-section h3 {
+      color: #1a1a1a;
+      font-size: 1rem;
+      font-weight: 600;
+    }
 
-        .shoe .img-container {
-            height: 200px; 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    /* Filters */
+    .filters {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      border: 1px solid #e5e5e5;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
 
-        .shoe .img-container img {
-            max-height: 100%;
-            max-width: 100%;
-            object-fit: contain; 
-        }
+    .filter-group {
+      flex: 1;
+      min-width: 180px;
+      max-width: 250px;
+    }
 
-        /* Filter styling */
-        #sizeFilter {
-            padding: 5px 10px;
-            font-size: 14px;
-        }
-    </style>
+    .filter-group label {
+      display: block;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 8px;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .filters select {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 14px;
+      border: 1.5px solid #d4d4d4;
+      border-radius: 8px;
+      background: white;
+      transition: all 0.2s ease;
+      color: #1a1a1a;
+    }
+
+    .filters select:focus {
+      outline: none;
+      border-color: #1a1a1a;
+    }
+
+    /* Shoe grid */
+    .shoe-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    /* Shoe cards */
+    .shoe {
+      background: white;
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      border: 1px solid #e5e5e5;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .shoe:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      border-color: #d4d4d4;
+    }
+
+    .img-container {
+      height: 200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #fafafa;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .img-container img {
+      max-height: 90%;
+      max-width: 90%;
+      object-fit: contain;
+      transition: transform 0.2s ease;
+    }
+
+    .shoe:hover .img-container img {
+      transform: scale(1.03);
+    }
+
+    .shoe h3 {
+      font-size: 15px;
+      color: #1a1a1a;
+      margin-bottom: 10px;
+      min-height: 38px;
+      line-height: 1.3;
+      font-weight: 600;
+    }
+
+    .shoe-details {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .detail-badge {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .size {
+      background: #1a1a1a;
+      color: white;
+    }
+
+    .cond {
+      background: #f5f5f5;
+      color: #525252;
+      border: 1px solid #e5e5e5;
+    }
+
+    .price {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-top: auto;
+      padding-top: 10px;
+      border-top: 1px solid #f0f0f0;
+    }
+
+    .price:empty::after {
+      content: 'Price on request';
+      font-size: 14px;
+      color: #737373;
+      font-weight: 500;
+    }
+
+    /* Choices.js customization */
+    .choices {
+      min-width: 100%;
+    }
+
+    .choices__inner {
+      border: 1.5px solid #d4d4d4;
+      border-radius: 8px;
+      padding: 8px;
+      background: white;
+      transition: all 0.2s ease;
+      min-height: 42px;
+    }
+
+    .choices__inner:focus-within {
+      border-color: #1a1a1a;
+    }
+
+    .choices__list--multiple .choices__item {
+      background: #1a1a1a;
+      border: none;
+      border-radius: 5px;
+      font-size: 12px;
+      padding: 4px 8px;
+    }
+
+    .choices__button {
+      border-left-color: rgba(255,255,255,0.3);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+      }
+
+      .qr-section {
+        flex-direction: column;
+        text-align: center;
+        padding: 15px;
+      }
+
+      .qr-section img {
+        margin-right: 0;
+        margin-bottom: 10px;
+      }
+
+      .qr-section h3 {
+        font-size: 0.9rem;
+      }
+
+      .filters {
+        padding: 15px;
+      }
+
+      .filter-group {
+        min-width: 100%;
+        max-width: 100%;
+      }
+
+      .shoe-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 12px;
+      }
+
+      .img-container {
+        height: 160px;
+      }
+
+      .shoe h3 {
+        font-size: 14px;
+        min-height: 36px;
+      }
+
+      .price {
+        font-size: 16px;
+      }
+    }
+  </style>
 </head>
 <body>
-
+  <div class="container">
     <h1>Sneakerness Bálint Stocklist</h1>
 
-    <div style="grid-column: 1 / -1; text-align:center; margin-bottom:20px;">
-        <h3>STOCKLIST QR FOR YOUR FRIENDS</h3>
-        <img src="{{ url_for('qr_stocklist') }}" alt="QR Code">
+    <!-- QR CODE -->
+    <div class="qr-section">
+      <img src="{{ url_for('qr_stocklist') }}" alt="QR Code">
+      <h3>Scan QR to share with friends</h3>
     </div>
 
     <!-- FILTERS -->
-    <div style="width: 100%; text-align: center; margin-bottom: 20px;">
-        <label for="sizeFilter">Filter by size:</label>
-        <select id="sizeFilter" onchange="filterShoes()">
-            <option value="">All</option>
-            <option value="EU41">EU41</option>
-            <option value="EU42">EU42</option>
-            <option value="EU42.5">EU42.5</option>
-            <option value="EU43">EU43</option>
-            <option value="EU44">EU44</option>
-            <option value="EU45">EU45</option>
-            <option value="L">L</option>
-            <option value="XL">XL</option>
+    <div class="filters">
+      <div class="filter-group">
+        <label for="sizeFilter">Size</label>
+        <select id="sizeFilter" multiple>
+          <option value="EU41">EU41</option>
+          <option value="EU42">EU42</option>
+          <option value="EU42.5">EU42.5</option>
+          <option value="EU43">EU43</option>
+          <option value="EU44">EU44</option>
+          <option value="EU45">EU45</option>
+          <option value="L">L</option>
+          <option value="XL">XL</option>
         </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="brandFilter">Brand</label>
+        <select id="brandFilter" multiple>
+          <option value="Nike">Nike</option>
+          <option value="Balenciaga">Balenciaga</option>
+          <option value="Off-White">Off-White</option>
+          <option value="Dior">Dior</option>
+          <option value="Jordan 1">Jordan 1</option>
+          <option value="Jordan 4">Jordan 4</option>
+          <option value="Travis Scott">Travis Scott</option>
+          <option value="New Balance">New Balance</option>
+          <option value="The North Face">The North Face</option>
+          <option value="VLONE">VLONE</option>
+          <option value="Yeezy">Yeezy</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="conditionFilter">Condition</label>
+        <select id="conditionFilter" multiple>
+          <option value="Used">Used</option>
+          <option value="DS">DS</option>
+        </select>
+      </div>
     </div>
 
-    <div style="width: 100%; text-align: center; margin-bottom: 20px;">
-        <label>Filter by Brand:</label><br>
-        <input type="checkbox" id="Nike" value="Nike" onchange="filterShoes()"> Nike
-        <input type="checkbox" id="Balenciaga" value="Balenciaga" onchange="filterShoes()"> Balenciaga
-        <input type="checkbox" id="Off-White" value="Off-White" onchange="filterShoes()"> Off-White
-        <input type="checkbox" id="Dior" value="Dior" onchange="filterShoes()"> Dior
-        <input type="checkbox" id="Jordan 1" value="Jordan 1" onchange="filterShoes()"> Jordan 1
-        <input type="checkbox" id="Jordan 4" value="Jordan 4" onchange="filterShoes()"> Jordan 4
-        <input type="checkbox" id="Travis Scott" value="Travis Scott" onchange="filterShoes()"> Travis Scott
-        <input type="checkbox" id="New Balance" value="New Balance" onchange="filterShoes()"> New Balance
-        <input type="checkbox" id="The North Face" value="The North Face" onchange="filterShoes()"> The North Face
-        <input type="checkbox" id="VLONE" value="VLONE" onchange="filterShoes()"> VLONE
-        <input type="checkbox" id="Yeezy" value="Yeezy" onchange="filterShoes()"> Yeezy
-    </div>
-
-    <!-- SHOE LIST -->
-    {% for shoe in shoes %}
-        <div class="shoe">
-            <div class="img-container">
-                <img src="{{ url_for('static', filename='images/' + shoe['image']) }}" alt="{{ shoe['name'] }}">
-            </div>
-            <h3>{{ shoe['name'] }}</h3>
-            <p class="size">{{ shoe['size'] }}</p>
-            <p class="cond">{{ shoe['condition'] }}</p>
-            <p class="price">
-                {% if shoe['price'].strip() %}
-                    {{ shoe['price'] }}
-                {% else %}
-                    Price on request
-                {% endif %}
-            </p>
+    <!-- SHOE GRID -->
+    <div class="shoe-grid">
+      {% for shoe in shoes %}
+      <div class="shoe">
+        <div class="img-container">
+          <img src="{{ url_for('static', filename='images/' + shoe['image']) }}" alt="{{ shoe['name'] }}">
         </div>
-    {% endfor %}
+        <h3>{{ shoe['name'] }}</h3>
+        <div class="shoe-details">
+          <span class="detail-badge size">{{ shoe['size'] }}</span>
+          <span class="detail-badge cond">{{ shoe['condition'] }}</span>
+        </div>
+        <p class="price">
+          {% if shoe['price'].strip() %}
+          {{ shoe['price'] }}
+          {% else %}
+          
+          {% endif %}
+        </p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
 
-    <!-- COMBINED FILTER SCRIPT -->
-    <script>
+  <!-- FILTER SCRIPT -->
+  <script>
+    // Initialize Choices.js for all dropdowns
+    const sizeSelect = new Choices('#sizeFilter', {
+      removeItemButton: true,
+      placeholderValue: 'Select size(s)',
+      searchEnabled: false,
+      shouldSort: false
+    });
+
+    const brandSelect = new Choices('#brandFilter', {
+      removeItemButton: true,
+      placeholderValue: 'Select brand(s)',
+      searchEnabled: false,
+      shouldSort: false
+    });
+
+    const conditionSelect = new Choices('#conditionFilter', {
+      removeItemButton: true,
+      placeholderValue: 'Select condition(s)',
+      searchEnabled: false,
+      shouldSort: false
+    });
+
+    // Filtering logic
     function filterShoes() {
-        const size = document.getElementById('sizeFilter').value;
+      const selectedSizes = sizeSelect.getValue(true);
+      const selectedBrands = brandSelect.getValue(true);
+      const selectedConditions = conditionSelect.getValue(true);
 
-        // Collect checked brands
-        const brandCheckboxes = document.querySelectorAll('input[type="checkbox"]');
-        let selectedBrands = [];
-        brandCheckboxes.forEach(cb => {
-            if(cb.checked) selectedBrands.push(cb.value);
-        });
+      const shoes = document.querySelectorAll('.shoe');
+      shoes.forEach(s => {
+        const sSize = s.querySelector('.size').innerText;
+        const sName = s.querySelector('h3').innerText;
+        const sCond = s.querySelector('.cond').innerText;
 
-        const shoes = document.querySelectorAll('.shoe');
-        shoes.forEach(s => {
-            const sSize = s.querySelector('.size').innerText;
-            const sName = s.querySelector('h3').innerText;
+        const sizeMatch = (selectedSizes.length === 0 || selectedSizes.some(size => sSize.includes(size)));
+        const brandMatch = (selectedBrands.length === 0 || selectedBrands.some(b => sName.includes(b)));
+        const conditionMatch = (selectedConditions.length === 0 || selectedConditions.some(c => sCond.includes(c)));
 
-            // Size filter
-            let sizeMatch = (size === '' || sSize.includes(size));
-
-            // Brand filter: show if any selected brand is in the shoe name
-            let brandMatch = (selectedBrands.length === 0 || selectedBrands.some(b => sName.includes(b)));
-
-            s.style.display = (sizeMatch && brandMatch) ? 'block' : 'none';
-        });
+        s.style.display = (sizeMatch && brandMatch && conditionMatch) ? 'block' : 'none';
+      });
     }
-    </script>
+
+    // Refilter on changes
+    document.querySelector('#sizeFilter').addEventListener('change', filterShoes);
+    document.querySelector('#brandFilter').addEventListener('change', filterShoes);
+    document.querySelector('#conditionFilter').addEventListener('change', filterShoes);
+  </script>
 </body>
 </html>
