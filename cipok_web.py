@@ -29,7 +29,7 @@ shoes = [
   {"name": "Yeezy Foam", "image": "foam-cinder.webp", "size": "43", "condition": "USED 10/9, OG ALL", "price": "30 000 Ft"},
   {"name": "Travis Scott AF1 Sail", "image": "travisaf.jpg", "size": "41", "condition": "USED 10/9, OG ALL", "price": "115 000 Ft"},
   {"name": "VLONE Butterfly Tee", "image": "vlone.webp", "size": "XL", "condition": "DS, OG NONE", "price": "25 000 Ft"},
-  {"name": "Yeezy Boost Static", "image": "yeezystatic.webp", "size": "43 1/3", "condition": "USED 10/7, OG NONE", "price": "20 000 Ft"},
+  {"name": "Yeezy Boost Static", "image": "yeezystatic.webp", "size": "43", "condition": "USED 10/7, OG NONE", "price": "20 000 Ft"},
   {"name": "Yeezy Boost Tail Light", "image": "yeezytaillight.jpeg", "size": "44", "condition": "USED 10/8, OG ALL", "price": "30 000 Ft"},
   {"name": "Jordan 4 SB Navy", "image": "j4navy.webp", "size": "46, 43", "condition": "DS, OG ALL", "price": "85 000 Ft"}
 ]
