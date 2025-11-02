@@ -1,4 +1,4 @@
-from flask import Flask, render_template, send_file
+from flask import Flask, render_template, send_file, request, jsonify
 import qrcode
 from io import BytesIO
 
@@ -23,7 +23,7 @@ shoes = [
   {"name": "Jordan 4 SB Pine Green", "image": "j4-sb-pine-green.webp", "size": "42", "condition": "USED 10/9+, OG NONE", "price": "95 000 Ft"},
   {"name": "New Balance 2002R", "image": "nb-2002r.webp", "size": "44", "condition": "USED 10/8+, OG NONE", "price": "30 000 Ft"},
   {"name": "Nike Dunk Low Lot 33", "image": "ow-lot33.webp", "size": "42", "condition": "USED 10/9+, OG ALL", "price": "75 000 Ft"},
-  {"name": "Nike SB Dunk Low Wizard Oz", "image": "FZ1291-600-sb-poppyfield-side.webp", "size": "45", "condition": "PADS, OG ALL", "price": "45 000 Ft"},
+  {"name": "Nike SB Dunk Low Wizard Oz", "image": "FZ1291-600-sb-poppyfield-side.webp", "size": "45", "condition": "DS, OG ALL", "price": "45 000 Ft"},
   {"name": "Off-White Dunk Low Lot 28", "image": "ow-lot28.webp", "size": "42", "condition": "USED 10/9, ONE FLAW, OG ALL", "price": "60 000 Ft"},
   {"name": "SB Dunk Lobster Orange", "image": "concepts-x-nike-dunk-sb-low-orange-lobster-1-1000.webp", "size": "44", "condition": "USED 10/9, OG ALL", "price": "130 000 Ft"},
   {"name": "Yeezy Foam", "image": "foam-cinder.webp", "size": "43", "condition": "USED 10/9, OG ALL", "price": "30 000 Ft"},
@@ -37,6 +37,26 @@ shoes = [
 @app.route("/")
 def index():
     return render_template("index.html", shoes=shoes)
+
+@app.route("/filter")
+def filter_shoes():
+    """API endpoint for filtering shoes"""
+    conditions = request.args.getlist('condition')
+    
+    filtered_shoes = shoes
+    
+    if conditions:
+        filtered_shoes = []
+        for shoe in shoes:
+            for condition in conditions:
+                if condition == "Used" and "USED" in shoe["condition"]:
+                    filtered_shoes.append(shoe)
+                    break
+                elif condition == "DS" and shoe["condition"].startswith("DS"):
+                    filtered_shoes.append(shoe)
+                    break
+    
+    return jsonify(filtered_shoes)
 
 @app.route("/qr")
 def qr_stocklist():

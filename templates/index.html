@@ -409,54 +409,64 @@
     </div>
   </div>
 
-  <!-- FILTER SCRIPT -->
-  <script>
-    // Initialize Choices.js for all dropdowns
-    const sizeSelect = new Choices('#sizeFilter', {
-      removeItemButton: true,
-      placeholderValue: 'Select size(s)',
-      searchEnabled: false,
-      shouldSort: false
+<!-- FILTER SCRIPT -->
+<script>
+  // Initialize Choices.js for all dropdowns
+  const sizeSelect = new Choices('#sizeFilter', {
+    removeItemButton: true,
+    placeholderValue: 'Select size(s)',
+    searchEnabled: false,
+    shouldSort: false
+  });
+
+  const brandSelect = new Choices('#brandFilter', {
+    removeItemButton: true,
+    placeholderValue: 'Select brand(s)',
+    searchEnabled: false,
+    shouldSort: false
+  });
+
+  const conditionSelect = new Choices('#conditionFilter', {
+    removeItemButton: true,
+    placeholderValue: 'Select condition(s)',
+    searchEnabled: false,
+    shouldSort: false
+  });
+
+  // Filtering logic - JAVÍTOTT VERZIÓ
+  function filterShoes() {
+    const selectedSizes = sizeSelect.getValue(true);
+    const selectedBrands = brandSelect.getValue(true);
+    const selectedConditions = conditionSelect.getValue(true);
+
+    const shoes = document.querySelectorAll('.shoe');
+    shoes.forEach(s => {
+      const sSize = s.querySelector('.size').innerText;
+      const sName = s.querySelector('h3').innerText;
+      const sCond = s.querySelector('.cond').innerText;
+
+      const sizeMatch = (selectedSizes.length === 0 || selectedSizes.some(size => sSize.includes(size)));
+      const brandMatch = (selectedBrands.length === 0 || selectedBrands.some(b => sName.includes(b)));
+      
+      // JAVÍTOTT CONDITION SZŰRÉS
+      const conditionMatch = (selectedConditions.length === 0 || selectedConditions.some(c => {
+        if (c === "Used") {
+          return sCond.includes("USED");
+        }
+        if (c === "DS") {
+          return sCond.includes("DS");
+        }
+        return false;
+      }));
+
+      s.style.display = (sizeMatch && brandMatch && conditionMatch) ? 'block' : 'none';
     });
+  }
 
-    const brandSelect = new Choices('#brandFilter', {
-      removeItemButton: true,
-      placeholderValue: 'Select brand(s)',
-      searchEnabled: false,
-      shouldSort: false
-    });
-
-    const conditionSelect = new Choices('#conditionFilter', {
-      removeItemButton: true,
-      placeholderValue: 'Select condition(s)',
-      searchEnabled: false,
-      shouldSort: false
-    });
-
-    // Filtering logic
-    function filterShoes() {
-      const selectedSizes = sizeSelect.getValue(true);
-      const selectedBrands = brandSelect.getValue(true);
-      const selectedConditions = conditionSelect.getValue(true);
-
-      const shoes = document.querySelectorAll('.shoe');
-      shoes.forEach(s => {
-        const sSize = s.querySelector('.size').innerText;
-        const sName = s.querySelector('h3').innerText;
-        const sCond = s.querySelector('.cond').innerText;
-
-        const sizeMatch = (selectedSizes.length === 0 || selectedSizes.some(size => sSize.includes(size)));
-        const brandMatch = (selectedBrands.length === 0 || selectedBrands.some(b => sName.includes(b)));
-        const conditionMatch = (selectedConditions.length === 0 || selectedConditions.some(c => sCond.includes(c)));
-
-        s.style.display = (sizeMatch && brandMatch && conditionMatch) ? 'block' : 'none';
-      });
-    }
-
-    // Refilter on changes
-    document.querySelector('#sizeFilter').addEventListener('change', filterShoes);
-    document.querySelector('#brandFilter').addEventListener('change', filterShoes);
-    document.querySelector('#conditionFilter').addEventListener('change', filterShoes);
+  // Refilter on changes
+  document.querySelector('#sizeFilter').addEventListener('change', filterShoes);
+  document.querySelector('#brandFilter').addEventListener('change', filterShoes);
+  document.querySelector('#conditionFilter').addEventListener('change', filterShoes);
   </script>
 </body>
 </html>
